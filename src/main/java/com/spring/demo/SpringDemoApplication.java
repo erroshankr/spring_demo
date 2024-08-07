@@ -11,3 +11,16 @@ public class SpringDemoApplication {
 	}
 
 }
+
+//Framework : collection of APIs that serves a related purpose
+// Spring : for building java based application, simplifies java development using dependency injection, loose coupling
+// SpringBoot : to create REST APIs (Representational State Transfer) based on Spring framework
+// API : any method in java is an API
+// REST API : method with mapping in Controller
+
+// Why Spring boot ?
+// It simplifies spring framework based development.
+// comes with autoconfiguration approach
+// It runs on a specific port of server --> someone which serves something
+//Maven --> Project Management Tool --> manages the dependencies used in project --> pom.xml
+// On compilation, maven will download all dependencies/libraries from mvn repository and puts in external Libraries directory

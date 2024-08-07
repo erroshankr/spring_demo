@@ -22,7 +22,7 @@ public class StudentController {
     private Student student;
 
     @GetMapping("/detail")
-    public String getDetail(){
+    public String getDetail(){  // API -> Application Programming Interface
         try {
             System.out.println(studentService + " : studentService");
             System.out.println(student.getName() + " - " + student.getRollNo()); // value present during spring container initialization
@@ -30,6 +30,16 @@ public class StudentController {
             student.setRollNo(5); // // value changed during runtime
             studentService.display(student);
             return "SUCCESS";
+        }catch (Exception e){
+            return "FAILURE";
+        }
+    }
+
+    @GetMapping("/showName")
+    public String getName(){  // API -> Application Programming Interface
+        try {
+            System.out.println(studentService + " : studentService");
+           return "ROSHAN";
         }catch (Exception e){
             return "FAILURE";
         }
