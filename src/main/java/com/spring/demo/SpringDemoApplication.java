@@ -24,3 +24,26 @@ public class SpringDemoApplication {
 // It runs on a specific port of server --> someone which serves something
 //Maven --> Project Management Tool --> manages the dependencies used in project --> pom.xml
 // On compilation, maven will download all dependencies/libraries from mvn repository and puts in external Libraries directory
+
+/*
+ * Spring-MVC : Model View Controller
+ * REST CALL -> GET, POST, PUT, DELETE
+ * GET : to fetch existing resource
+ * POST: to create a new resource
+ * PUT : to update an existing resource
+ * DELETE : to remove an existing resource
+ *
+ *
+ * MVC Approach : Model View Controller
+ * Controller : to accept request, route it to correct resource and return response
+ * View : to show desired response in specific way
+ * Model : data
+ *
+ * Vanilla, Cone shape
+ *
+ * client --> billing counter(Vanilla cone) --> 1 scoop vanilla(data)
+ *                                          --> cone (view)
+ *                client <-- billing counter(controller)<--> vanilla put in a cone
+ * JSON : Javascript Object Notation
+ */
+

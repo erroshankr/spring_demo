@@ -16,6 +16,14 @@ public class Student {
     @Value("${student.rollNo: 10}")
     private int rollNo;
 
+    public Student(String name, int rollNo) {
+        this.name = name;
+        this.rollNo = rollNo;
+    }
+
+    public Student(){
+
+    }
     public String getName() {
         return name;
     }
