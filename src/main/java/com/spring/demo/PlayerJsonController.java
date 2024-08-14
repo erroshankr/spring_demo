@@ -12,7 +12,7 @@ import java.util.List;
 // inversion of control is achieved thro dependency injection.
 // dependency injection : is used to achieve inversion of control, manages dependency of a bean, provide loose coupling
 @RestController // --> It returns object as it is like json --> no beautification
-public class StudentJsonController {
+public class PlayerJsonController {
     /**
      * <bean id ="studentController" name="com.spring.demo.StudentController">
      *     <property name="studentService" ref="studentService"/>
@@ -20,19 +20,19 @@ public class StudentJsonController {
      *  </bean>
      */
     @Autowired
-    private StudentService studentService;
+    private PlayerService playerService;
 
     @Autowired
-    private Student student;
+    private PlayerModel playerModel;
 
     @GetMapping("/detail")
     public String getDetail(){  // API -> Application Programming Interface
         try {
-            System.out.println(studentService + " : studentService");
-            System.out.println(student.getName() + " - " + student.getRollNo()); // value present during spring container initialization
-            student.setName("Rohit"); // value changed during runtime
-            student.setRollNo(5); // // value changed during runtime
-            studentService.display(student);
+            System.out.println(playerService + " : studentService");
+            System.out.println(playerModel.getName() + " - " + playerModel.getJerseyNo()); // value present during spring container initialization
+            playerModel.setName("Rohit"); // value changed during runtime
+            playerModel.setJerseyNo(5); // // value changed during runtime
+            playerService.display(playerModel);
             return "SUCCESS";
         }catch (Exception e){
             return "FAILURE";
@@ -42,9 +42,9 @@ public class StudentJsonController {
     @GetMapping("/showName")
     public String getName(){  // API -> Application Programming Interface
         try {
-            System.out.println(studentService + " : studentService");
+            System.out.println(playerService + " : studentService");
        //     Student s1 = new Student();
-            return student.getName()+ " : "+String.valueOf(student.getRollNo());
+            return playerModel.getName()+ " : "+String.valueOf(playerModel.getJerseyNo());
         }catch (Exception e){
             return "FAILURE";
         }
@@ -53,12 +53,12 @@ public class StudentJsonController {
     @GetMapping("/showDetails")
     public String getAllInfo(){  // API -> Application Programming Interface
         try {
-            List<Student> students = new ArrayList<>();
-            students.add(new Student("Rohit Sharma", 45));
-            students.add(new Student("Virat Kohli", 18));
-            students.add(new Student("Rahul Dravid",24));
-            students.add(new Student("Sourav Ganguly", 04));
-            students.add(new Student("MS Dhoni", 07));
+            List<PlayerModel> playerModels = new ArrayList<>();
+            playerModels.add(new PlayerModel(1,"Rohit Sharma", 45));
+            playerModels.add(new PlayerModel(2,"Virat Kohli", 18));
+            playerModels.add(new PlayerModel(3,"Rahul Dravid",24));
+            playerModels.add(new PlayerModel(4,"Sourav Ganguly", 04));
+            playerModels.add(new PlayerModel(5,"MS Dhoni", 07));
             return "student_details";
         }catch (Exception e){
             return "FAILURE";
