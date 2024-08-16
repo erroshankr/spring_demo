@@ -22,6 +22,7 @@
 <table class="styled-table">
     <thead>
     <tr>
+        <th>Player ID</th>
         <th>Name</th>
         <th>Jersey</th>
         <th>Action</th>
@@ -30,24 +31,36 @@
     <tbody>
     <!-- Iterating over a list of playerModels -->
     <tr th:each="player : ${players}">
+        <td th:text="${player.playerID}"></td>
         <td th:text="${player.name}"></td>
         <td th:text="${player.jerseyNo}"></td>
+        <td>
+            <div class="action-icons">
+                <!-- Edit icon -->
+                <i class="edit-icon" style="cursor:pointer;"
+                   th:data-player-id="${player.playerID}"
+                   onclick="editPlayer(this)">✏️</i>
+                <!-- Delete icon -->
+                <i class="delete-icon" style="cursor:pointer;"
+                   th:data-player-id="${player.playerID}"
+                   onclick="deletePlayer(this)">🗑️</i>
+            </div>
+        </td>
     </tr>
     </tbody>
 </table>
 
 <script>
     // Function to handle editing a player
-    function editPlayer(playerID, name, jerseyNo) {
+    function editPlayer(element) {
+        var playerID = element.getAttribute("data-player-id");
+        var name = element.getAttribute("data-player-name");
+        var jerseyNo = element.getAttribute("data-player-jersey");
+
         document.getElementById("playerID").value = playerID;
         document.getElementById("name").value = name;
         document.getElementById("jersey").value = jerseyNo;
 
         // Set the action URL for editing
-        var actionUrl = '/editPlayer/' + playerID;
-        document.getElementById("playerForm").action = actionUrl;
-    }
+        var actionUrl = '/editPlayer/' + playerID
 </script>
-
-</body>
-</html>

@@ -3,6 +3,7 @@ package com.spring.demo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
@@ -30,6 +31,14 @@ public class PlayerHtmlController {
         playerModelList.add(player);
         model.addAttribute("players", playerModelList); // sends data from backend to frontend
         model.addAttribute("player", new PlayerModel());
+        return "player_details";
+    }
+
+    @GetMapping("/editPlayer/{playerID}") // localhost:8080/editPlayer/1
+    public String editPlayer(Model model, @PathVariable int playerID){
+        PlayerModel playerModel = playerModelList.get(playerID-1);
+        model.addAttribute("player", playerModel);
+        model.addAttribute("players", playerModelList);
         return "player_details";
     }
 }
