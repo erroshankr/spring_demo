@@ -3,123 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Player Management System</title>
-    <style>
-        .styled-table {
-            border-collapse: collapse;
-            margin: 25px 0;
-            font-size: 0.9em;
-            font-family: sans-serif;
-            min-width: 400px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .styled-table thead tr {
-            background-color: #009879;
-            color: #ffffff;
-            text-align: left;
-        }
-
-        .styled-table th,
-        .styled-table td {
-            padding: 12px 15px;
-        }
-
-        .styled-table tbody tr {
-            border-bottom: 1px solid #dddddd;
-        }
-
-        .styled-table tbody tr:nth-of-type(even) {
-            background-color: #f3f3f3;
-        }
-
-        .styled-table tbody tr:last-of-type {
-            border-bottom: 2px solid #009879;
-        }
-
-        .styled-table tbody tr.active-row {
-            font-weight: bold;
-            color: #009879;
-        }
-
-        /* Action Icons */
-        .action-icons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .action-icons i {
-            cursor: pointer;
-            color: #009879;
-        }
-
-        .action-icons i:hover {
-            color: #005f57;
-        }
-
-        /* Popup Modal */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 300px;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{~/css/style.css}">
 </head>
 <body>
 <h1>Player Management System</h1>
 
-<!-- Button to open the modal for adding a new player -->
-<button id="addPlayerBtn">Add Player</button>
-
-<!-- The Modal -->
-<div id="playerModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2 id="modalTitle">Add New Player</h2>
-        <form id="playerForm" th:action="@{/addPlayer}" th:method="post" th:object="${player}">
-            <input type="hidden" id="playerID" name="playerID">
-            <label for="name">Name:</label><br>
-            <input type="text" id="name" name="name"><br><br>
-            <label for="jersey">Jersey Number:</label><br>
-            <input type="text" id="jersey" name="jerseyNo"><br><br>
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-</div>
+<!-- Form for adding a new player -->
+<h2>Add New Player</h2>
+<form id="playerForm" th:action="@{/addPlayer}" th:method="post" th:object="${player}">
+    <input type="hidden" th:field="*{playerID}">
+    <label for="name">Name:</label><br>
+    <input type="text" th:field="*{name}" id="name" name="name" required><br><br>
+    <label for="jersey">Jersey Number:</label><br>
+    <input type="text" th:field="*{jerseyNo}" id="jersey" name="jerseyNo" required><br><br>
+    <button type="submit">Submit</button>
+</form>
 
 <table class="styled-table">
     <thead>
     <tr>
         <th>Name</th>
         <th>Jersey</th>
-        <th>Action</th> <!-- New Action column -->
+        <th>Action</th>
     </tr>
     </thead>
     <tbody>
@@ -127,63 +32,20 @@
     <tr th:each="player : ${players}">
         <td th:text="${player.name}"></td>
         <td th:text="${player.jerseyNo}"></td>
-        <td>
-            <div class="action-icons">
-                <i class="edit-icon" th:onclick="'editPlayer(' + ${player.playerID} + ', \'' + ${player.name} + '\', \'' + ${player.jerseyNo} + '\')'">✏️</i>
-                <i class="delete-icon" th:onclick="'window.location.href=\'/deletePlayer/' + ${player.playerID} + '\''">🗑️</i>
-            </div>
-        </td>
     </tr>
     </tbody>
 </table>
 
 <script>
-    // Get the modal
-    var modal = document.getElementById("playerModal");
-
-    // Get the button that opens the modal for adding a player
-    var btn = document.getElementById("addPlayerBtn");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // Open the modal for adding a new player
-    btn.onclick = function() {
-        openModal('Add New Player', '', '', '/addPlayer');
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-
-    // Function to open the modal with specific data for editing or adding
-    function openModal(title, playerID, name, jerseyNo, actionUrl) {
-        document.getElementById("modalTitle").innerText = title;
-        document.getElementById("playerID").value = playerID || '';
-        document.getElementById("name").value = name || '';
-        document.getElementById("jersey").value = jerseyNo || '';
-        document.getElementById("playerForm").setAttribute("th:action", actionUrl);
-
-        // Set the form action dynamically
-        var form = document.getElementById("playerForm");
-        form.action = actionUrl;
-
-        modal.style.display = "block";
-    }
-
     // Function to handle editing a player
     function editPlayer(playerID, name, jerseyNo) {
+        document.getElementById("playerID").value = playerID;
+        document.getElementById("name").value = name;
+        document.getElementById("jersey").value = jerseyNo;
+
         // Set the action URL for editing
         var actionUrl = '/editPlayer/' + playerID;
-        openModal('Edit Player', playerID, name, jerseyNo, actionUrl);
+        document.getElementById("playerForm").action = actionUrl;
     }
 </script>
 
