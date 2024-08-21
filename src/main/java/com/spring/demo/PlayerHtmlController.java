@@ -5,16 +5,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller  // always returns html view name  --> /resource/templates/filename.html --> beautification
 public class PlayerHtmlController {
-    List<PlayerModel> playerModelList = new ArrayList<>();
+    Map<Integer,PlayerModel> playerMap = new HashMap<>();
 
     @GetMapping("/")
     public String getAllInfo(Model model){  // API -> Application Programming Interface
         try {
-            model.addAttribute("players", playerModelList); // sends data from backend to frontend
+            model.addAttribute("players", new ArrayList<>(playerMap.values())); // sends data from backend to frontend
             model.addAttribute("player", new PlayerModel());
             return "player_details"; // /resource/templates/player_details.html
         }catch (Exception e){
@@ -25,9 +27,9 @@ public class PlayerHtmlController {
     @PostMapping("/addPlayer")
     public String createInfo(Model model, PlayerModel player){
         System.out.println(player.getName() + " - " + player.getJerseyNo());
-        player.setPlayerID(playerModelList.size() + 1);
-        playerModelList.add(player);
-        model.addAttribute("players", playerModelList); // sends data from backend to frontend
+        player.setPlayerID(playerMap.size() + 1);
+        playerMap.put(player.getPlayerID(),player);
+        model.addAttribute("players", new ArrayList<>(playerMap.values())); // sends data from backend to frontend
         model.addAttribute("player", new PlayerModel());
         return "player_details";
     }
@@ -44,27 +46,26 @@ public class PlayerHtmlController {
     @GetMapping("/edit/{playerID}")
     public String editPlayerByID(Model model,@PathVariable int playerID){
 
-        PlayerModel playerModel = playerModelList.get(playerID-1);
+        PlayerModel playerModel = playerMap.get(playerID);
         model.addAttribute("player", playerModel);
-        model.addAttribute("players", playerModelList);
+        model.addAttribute("players", new ArrayList<>(playerMap.values()));
         return "player_details";
     }
 
     @PostMapping("/editPlayer")
     public String updatePlayer(Model model, PlayerModel playerModel){
-        playerModelList.set(playerModel.getPlayerID()-1, playerModel);
-
+        playerMap.put(playerModel.getPlayerID(), playerModel);
         model.addAttribute("player", new PlayerModel());
-        model.addAttribute("players", playerModelList);
+        model.addAttribute("players", new ArrayList<>(playerMap.values()));
         return "player_details";
     }
 
     @GetMapping("/deletePlayer/{playerID}")
     public String deletePlayer(Model model, @PathVariable int playerID){
    //     playerModelList.remove(playerID - 1);
-        playerModelList.remove(playerModelList.get(playerID-1));
+        playerMap.remove(playerID);
         model.addAttribute("player", new PlayerModel());
-        model.addAttribute("players", playerModelList);
+        model.addAttribute("players", new ArrayList<>(playerMap.values()));
         return "player_details";
     }
 
