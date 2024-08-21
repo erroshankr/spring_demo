@@ -94,3 +94,10 @@ public class PlayerHtmlController {
 1. on clicking delete icon of a row, that playerID must be sent to backend api controller
 2. remove that entry base don playerID from the storage and load html
  */
+
+/*
+add/edit number of matches player in  the table
+add/edit  column for centuries & half centuries
+total runs scored
+batting average
+ */
