@@ -61,7 +61,8 @@ public class PlayerHtmlController {
 
     @GetMapping("/deletePlayer/{playerID}")
     public String deletePlayer(Model model, @PathVariable int playerID){
-        playerModelList.remove(playerID - 1);
+   //     playerModelList.remove(playerID - 1);
+        playerModelList.remove(playerModelList.get(playerID-1));
         model.addAttribute("player", new PlayerModel());
         model.addAttribute("players", playerModelList);
         return "player_details";
