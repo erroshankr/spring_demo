@@ -13,7 +13,7 @@ public class PlayerModel {
      */
     @Value("${player.name: Roshan}")
     private String name;
-    @Value("${player.rollNo: 10}")
+    @Value("${player.jerseyNo: 10}")
     private int jerseyNo;
 
     private int playerID;

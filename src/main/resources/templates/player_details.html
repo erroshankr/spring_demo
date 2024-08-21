@@ -8,15 +8,16 @@
 <body>
 <h1>Player Management System</h1>
 
-<!-- Form for adding a new player -->
+<!-- Form for adding/editing a player -->
 <h2>Add New Player</h2>
-<form id="playerForm" th:action="@{/addPlayer}" th:method="post" th:object="${player}">
-    <input type="hidden" th:field="*{playerID}">
+<form id="playerForm" th:object="${player}"
+      th:action="@{${player.playerID == 0} ? '/addPlayer' : '/editPlayer'}" th:method="post">
+    <input type="hidden" th:field="*{playerID}" id="playerID">
     <label for="name">Name:</label><br>
     <input type="text" th:field="*{name}" id="name" name="name" required><br><br>
     <label for="jersey">Jersey Number:</label><br>
     <input type="text" th:field="*{jerseyNo}" id="jersey" name="jerseyNo" required><br><br>
-    <button type="submit">Submit</button>
+    <button type="submit" th:text="${player.playerID == 0 ? 'Add' : 'Edit'}"></button>
 </form>
 
 <table class="styled-table">
@@ -37,30 +38,34 @@
         <td>
             <div class="action-icons">
                 <!-- Edit icon -->
-                <i class="edit-icon" style="cursor:pointer;"
+                <a th:href="@{'/edit/' + ${player.playerID}}" class="edit-icon" style="cursor:pointer;"
                    th:data-player-id="${player.playerID}"
-                   onclick="editPlayer(this)">✏️</i>
+                   th:data-player-name="${player.name}"
+                   th:data-player-jersey="${player.jerseyNo}">✏️</a>
                 <!-- Delete icon -->
-                <i class="delete-icon" style="cursor:pointer;"
-                   th:data-player-id="${player.playerID}"
-                   onclick="deletePlayer(this)">🗑️</i>
+                <a th:href="@{'/deletePlayer/' + ${player.playerID}}" class="delete-icon" style="cursor:pointer;"
+                   th:data-player-id="${player.playerID}">🗑️</a>
             </div>
         </td>
     </tr>
     </tbody>
 </table>
 
+<!-- Hidden form to submit DELETE request -->
+<form id="deleteForm" method="post" style="display:none;">
+    <input type="hidden" name="_method" value="delete">
+</form>
+
 <script>
-    // Function to handle editing a player
-    function editPlayer(element) {
-        var playerID = element.getAttribute("data-player-id");
-        var name = element.getAttribute("data-player-name");
-        var jerseyNo = element.getAttribute("data-player-jersey");
-
-        document.getElementById("playerID").value = playerID;
-        document.getElementById("name").value = name;
-        document.getElementById("jersey").value = jerseyNo;
-
-        // Set the action URL for editing
-        var actionUrl = '/editPlayer/' + playerID
+    // Function to handle deleting a player
+    function submitDeleteForm(playerID) {
+        if (confirm('Are you sure you want to delete this player?')) {
+            var form = document.getElementById('deleteForm');
+            form.action = '/deletePlayer/' + playerID;
+            form.submit();
+        }
+    }
 </script>
+
+</body>
+</html>
